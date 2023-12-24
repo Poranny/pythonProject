@@ -3,6 +3,8 @@ import PySimpleGUI as sg
 
 
 def main():
+    sg.theme("DarkBlue12")
+
     environment = clips.Environment()
 
     environment.load("online_games.clp")
@@ -12,21 +14,22 @@ def main():
     message_template = environment.find_template('message')
     message = dict(list(message_template.facts())[0])
 
-    BUTTON_KEYS = ['button0', 'button1', 'button2', 'button3', 'button4']
-    TEXT_KEYS = ['text0', 'text1', 'text2', 'text3', 'text4']
+    buttons = ['b0', 'b1', 'b2', 'b3', 'b4', 'b5']
     options = message['answers']
+    s = len(options)
 
-    radio_buttons = [[sg.Radio('', 1, key=BUTTON_KEYS[i], visible=(i < 4), default=(i == -1)),
-                      sg.Text(options[i] if i < 4 else '', pad=(0, 0), font='Any 11', key=TEXT_KEYS[i])] for i in
-                     range(4)]
+    radio_buttons = [
+        [sg.Radio(options[i], 2137, key=buttons[i], visible=(i < s), default=(i == -1), font=("Any", 13))] for i in
+        range(s)
+    ]
 
     layout = [
-        [sg.Text(message['question'], font=('Helvetica', 18), key='q')],
+        [sg.Text(message['question'], font=('Arial', 18), key='quest')],
         radio_buttons,
         [sg.Button('Submit')]
     ]
 
-    window = sg.Window("Find the right online game", layout, size=(700, 700))
+    window = sg.Window("Find the right online game for yourself", layout, size=(700, 400))
 
     while True:
         event, values = window.read()
@@ -35,26 +38,24 @@ def main():
         elif event == 'Submit':
             if len([x for x, y in values.items() if y is True]) > 0:
                 value = [x for x, y in values.items() if y is True][0]
-                environment.assert_string('({} "{}")'.format(message['name'], message['answers'][BUTTON_KEYS.index(value)]))
+                environment.assert_string('({} "{}")'.format(message['name'], message['answers'][buttons.index(value)]))
                 environment.run()
 
                 message_list = list(message_template.facts())
 
                 if message_list:
                     message = dict(message_list[0])
-                    window['q'].update(value=message['question'])
+                    window['quest'].update(value=message['question'])
 
                     options = message['answers']
                     n = len(options)
 
                     for i in range(4):
-                        window[BUTTON_KEYS[i]].update(value=False)
+                        window[buttons[i]].update(value=False)
                         if i < n:
-                            window[BUTTON_KEYS[i]].update(visible=True)
-                            window[TEXT_KEYS[i]].update(value=options[i], visible=True)
+                            window[buttons[i]].update(visible=True, text=options[i])
                         else:
-                            window[TEXT_KEYS[i]].update(visible=False)
-                            window[BUTTON_KEYS[i]].update(visible=False)
+                            window[buttons[i]].update(visible=False)
                 else:
                     window.close()
                     break
@@ -72,7 +73,7 @@ def main():
         [sg.Button("Close", size=(10, 2), pad=(30, 30))]
     ]
 
-    result_window = sg.Window("Found game for you", result_layout, size=(600, 200), element_justification='c')
+    result_window = sg.Window("Found game for you", result_layout, size=(500, 200), element_justification='c')
 
     while True:
         event, values = result_window.read()
