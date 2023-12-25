@@ -75,6 +75,299 @@
     (assert (message (name "fantasy-age-digits") (question "How many digits are in your age?") (answers "1 or not sure" "2 or more")))
 )
 
+; RPGS fantasy casual intense
+(defrule fantasy-intensity-yes
+    ?f <- (fantasy-intensity "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Shaiya")))
+)
+
+; RPGS fantasy casual not intense
+(defrule fantasy-more-social
+    ?f <- (fantasy-intensity "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-more-social") (question "Would you like more social features for group play?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy casual not social
+(defrule fantasy-social-no
+    ?f <- (fantasy-more-social "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Adventure Quest Worlds")))
+)
+
+; RPGS fantasy casual social
+(defrule fantasy-social-yes
+    ?f <- (fantasy-more-social "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Dragon Fable")))
+)
+
+; RPGS fantasy age 1
+(defrule fantasy-age-digits-one
+    ?f <- (fantasy-age-digits "1 or not sure")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Wizard 101")))
+)
+
+; RPGS fantasy age >=2
+(defrule fantasy-anime
+    ?f <- (fantasy-age-digits "2 or more")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-anime") (question "Do you like cute, wide-eyed anime characters?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy anime yes
+(defrule fantasy-servants
+    ?f <- (fantasy-anime "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-servants") (question "Would you like to have magical servants?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy servants no
+(defrule fantasy-commitments
+    ?f <- (fantasy-servants "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-commitments") (question "How are you at making commitments?") (answers "Great" "Not so great")))
+)
+
+; RPGS fantasy servants yes
+(defrule fantasy-servants-yes
+    ?f <- (fantasy-servants "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+
+    (assert (online-game (name "Grand Fantasia")))
+)
+
+; RPGS fantasy commitments yes
+(defrule fantasy-commitments-yes
+    ?f <- (fantasy-commitments "Great")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+
+    (assert (online-game (name "Dream of Mirror")))
+)
+
+; RPGS fantasy commitments no
+(defrule fantasy-commitments-no
+    ?f <- (fantasy-commitments "Not so great")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+
+    (assert (online-game (name "Eden Eternal")))
+)
+
+; RPGS fantasy anime no
+(defrule fantasy-large-battles
+    ?f <- (fantasy-anime "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-large-battles") (question "Do you enjoy large scale battles?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy large battles no
+(defrule fantasy-pvp
+    ?f <- (fantasy-large-battles "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-pvp") (question "Are you looking for a game with an emphasis on player-vs-player fighting?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy large battles yes
+(defrule fantasy-lotr
+    ?f <- (fantasy-large-battles "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-lotr") (question "Did you like the Lord of the Rings trilogy?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy lotr yes
+(defrule fantasy-lotr-yes
+    ?f <- (fantasy-lotr "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Lord of the Rings Online")))
+)
+
+; RPGS fantasy lotr no
+(defrule fantasy-quests-pets
+    ?f <- (fantasy-lotr "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-quests-pets") (question "Do you prefer a game with strong quests, or awesome pets?") (answers "Quests" "Pets")))
+)
+
+; RPGS fantasy quests
+(defrule fantasy-quests
+    ?f <- (fantasy-quests-pets "Quests")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "4Story")))
+)
+
+; RPGS fantasy pets
+(defrule fantasy-pets
+    ?f <- (fantasy-quests-pets "Pets")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Aika")))
+)
+
+; RPGS fantasy pvp yes
+(defrule fantasy-close-wow
+    ?f <- (fantasy-pvp "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-close-wow") (question "Would you like to find a game as close as possible to World of Warcraft?") (answers "Yes" "No")))
+)
+
+; RPGS fantasy pvp no
+(defrule fantasy-grand-daddy
+    ?f <- (fantasy-pvp "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-grand-daddy") (question "Are you looking for something based on the grand-daddy of all RPGs, pen-and-paper Dungeons and Dragons? Or a more complex combat system") (answers "Dungeons and Dragons" "Combat system")))
+)
+
+; RPGS close wow yes
+(defrule fantasy-close-wow-yes
+    ?f <- (fantasy-close-wow "Yes")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Runes of Magic")))
+)
+
+; RPGS close wow no
+(defrule fantasy-distinctive-features
+    ?f <- (fantasy-close-wow "No")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-distinctive-features") (question "Which of these distinctive features appeals to you the most?") (answers "Auto-pilot" "Become a God" "Hack-n-slash")))
+)
+
+; RPGS auto-pilot
+(defrule fantasy-distinctive-autopilot
+    ?f <- (fantasy-distinctive-features "Auto-pilot")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Crystal Saga")))
+)
+
+; RPGS become a God
+(defrule fantasy-distinctive-autopilot
+    ?f <- (fantasy-distinctive-features "Become a God")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Forsaken World")))
+)
+
+; RPGS hack-n-slash
+(defrule fantasy-distinctive-hacknslash
+    ?f <- (fantasy-distinctive-features "Hack-n-slash")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Drakensang")))
+)
+
+; RPGS fantasy d&d yes
+(defrule fantasy-dd-old
+    ?f <- (fantasy-grand-daddy "Dungeons and Dragons")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (message (name "fantasy-dd-old") (question "Do you want an old-school D&D game or a cutting edge 3D experience?") (answers "Old-school" "Cutting edge")))
+)
+
+; RPGS fantasy d&d combat
+(defrule fantasy-grand-daddy-combat
+    ?f <- (fantasy-grand-daddy "Combat system")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Age of Conan")))
+)
+
+; RPGS fantasy d&d oldschool
+(defrule fantasy-dd-old-oldschool
+    ?f <- (fantasy-dd-old "Old-school")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Dark Swords")))
+)
+
+; RPGS fantasy d&d edge
+(defrule fantasy-dd-old-cuttingedge
+    ?f <- (fantasy-dd-old "Cutting edge")
+    ?id <- (message (name ?x))
+    =>
+    (retract ?id)
+    (retract ?f)
+    (assert (online-game (name "Dungeons and Dragons Online")))
+)
+
 
 ; RPGS science fiction path
 (defrule rpgs-ground-or-space
