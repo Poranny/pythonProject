@@ -1,3 +1,5 @@
+import textwrap
+
 import clips
 import PySimpleGUI as sg
 
@@ -45,7 +47,10 @@ def main():
 
                 if message_list:
                     message = dict(message_list[0])
-                    window['quest'].update(value=message['question'])
+                    extracted_message = message['question']
+                    new_message = textwrap.fill(extracted_message, 60)
+
+                    window['quest'].update(value=new_message)
 
                     options = message['answers']
                     n = len(options)
