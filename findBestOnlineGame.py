@@ -31,7 +31,7 @@ def main():
         [sg.Button('Submit')]
     ]
 
-    window = sg.Window("Find the right online game for yourself", layout, size=(700, 400))
+    window = sg.Window("Find the right online game for yourself", layout, size=(700, 400), resizable=True)
 
     while True:
         event, values = window.read()
